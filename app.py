@@ -24,3 +24,11 @@ Base = automap_base()
 # reflect the tables
 Base.prepare(db.engine, reflect=True)
 
+# Save references to each table
+###need code here
+
+
+@app.route("/")
+def index():
+    """Return the homepage."""
+    return render_template("index.html")
