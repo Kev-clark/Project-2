@@ -1,8 +1,10 @@
 import os
 
+import json
 import pandas as pd
 import numpy as np
 
+import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
@@ -17,7 +19,6 @@ app = Flask(__name__)
 #################################################
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/olympicData.sqlite"
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # reflect an existing database into a new model
@@ -26,7 +27,7 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-###need code here
+
 
 
 @app.route("/")
