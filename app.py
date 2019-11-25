@@ -31,7 +31,7 @@ Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
 #print(Base.classes.keys())
-Olympics = Base.classes.olympic_data
+Olympics = Base.classes.olympicdata
 
 
 @app.route("/")
@@ -50,6 +50,19 @@ def games():
 
     #Return a list of the column names (games names)
     return jsonify(games)
+
+@app.route("/countries")
+def countries():
+    """return a list of distinct countries"""
+
+    results_2 = db.session.query(Olympics.name.distinct().label("name"))
+    countries = [row.name for row in results_2.all()]
+
+    #Return a list of the column names (games names)
+    return jsonify(countries)
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
