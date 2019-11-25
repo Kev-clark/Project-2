@@ -18,8 +18,11 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/olympicData.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/olympicDataFinal.sqlite"
+
 db = SQLAlchemy(app)
+
+#engine = create_engine("sqlite:///olympicDataFinal.sqlite")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -27,7 +30,8 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-
+#print(Base.classes.keys())
+Olympics = Base.classes.olympic_data
 
 
 @app.route("/")
@@ -35,5 +39,17 @@ def index():
     """Return the homepage."""
     return render_template("index.html")
 
+
+@app.route("/games")
+def games():
+    """Return a list of games."""
+    
+    #Query for the games
+    results = db.session.query(Olympics.Games.distinct().label("Games"))
+    games = [row.Games for row in results.all()]
+
+    #Return a list of the column names (games names)
+    return jsonify(games)
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
