@@ -51,18 +51,49 @@ def games():
     #Return a list of the column names (games names)
     return jsonify(games)
 
-@app.route("/countries")
-def countries():
-    """return a list of distinct countries"""
+@app.route("/medals/<games>")
+def medals(games):
 
-    results_2 = db.session.query(Olympics.name.distinct().label("name"))
-    countries = [row.name for row in results_2.all()]
+    results_2 = db.session.query(Olympics).filter(Olympics.Games==games)
+    x = [row.Games for row in results_2.all()]
+    y = [row.Medal for row in results_2.all()]
+    z = [row.name for row in results_2.all()]
+    lat = [row.latitude for row in results_2.all()]
+    lon = [row.longitude for row in results_2.all()]
 
-    #Return a list of the column names (games names)
-    return jsonify(countries)
+    rsdic={
+            "Name": z, 
+            "Medal":y, 
+            "lat":lat, 
+            "long":lon
+            }
+    pd_results=pd.DataFrame(rsdic)
+    pd_results["Name"].value_counts()
 
+    x=pd.DataFrame(pd_results.groupby(["Name", "Medal"]).count())
+    del x['long']
+    x = x.rename(columns={"lat":"count"})
 
+    final = pd.merge(x, pd_results, how="left", on=["Name","Medal"])
 
+    final.drop_duplicates().reset_index()
+
+    final["gold"] = (final["Medal"]=="Gold")
+    final["silver"] = final["Medal"]=="Silver"
+    final["bronze"] = final["Medal"]=="Bronze"
+    final["NM"] = final["Medal"]=="NM"
+
+    final_g = final.groupby(["Name"]).agg({
+    "lat": "max",
+    "long": "max",
+    "count": "max",
+    "gold": "sum",
+    "silver": "sum",
+    "bronze": "sum",
+    "NM": "sum"
+    }) 
+
+    return(final_g.reset_index().to_json(orient='records'))
 
 if __name__ == "__main__":
     app.run(debug=True)
