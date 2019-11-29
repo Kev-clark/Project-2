@@ -1,6 +1,23 @@
-// Create a map object
+var LeafIcon = L.Icon.extend({
+  options: {
+      shadowUrl: 'leaf-shadow.png',
+      iconSize:     [38, 95],
+      shadowSize:   [50, 64],
+      iconAnchor:   [22, 94],
+      shadowAnchor: [4, 62],
+      popupAnchor:  [-3, -76]
+  }
+});
+
+var goldMedalIcon = new LeafIcon({iconUrl: 'gold.png'}),
+    silverMedalIcon = new LeafIcon({iconUrl: 'Silver.png'}),
+    BronzeMedalIcon = new LeafIcon({iconUrl: 'Bronze.png'});
+
+function buildMap(data)
+
+    // Create a map object
 const myMap = L.map("map", {
-    center: [15.5994, -28.6731],
+    center: [0, 0],
     zoom: 3
 });
 
@@ -11,84 +28,46 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: API_KEY
 }).addTo(myMap);
 
-// Country data
-const countries = [
-  {
-    name: "Brazil",
-    location: [-14.2350, -51.9253],
-    points: 227
-  },
-  {
-    name: "Germany",
-    location: [51.1657, 10.4515],
-    points: 218
-  },
-  {
-    name: "Italy",
-    location: [41.8719, 12.5675],
-    points: 156
-  },
-  {
-    name: "Argentina",
-    location: [-38.4161, -63.6167],
-    points: 140
-  },
-  {
-    name: "Spain",
-    location: [40.4637, -3.7492],
-    points: 99
-  },
-  {
-    name: "England",
-    location: [52.355, 1.1743],
-    points: 98
-  },
-  {
-    name: "France",
-    location: [46.2276, 2.2137],
-    points: 96
-  },
-  {
-    name: "Netherlands",
-    location: [52.1326, 5.2913],
-    points: 93
-  },
-  {
-    name: "Uruguay",
-    location: [-32.4228, -55.7658],
-    points: 72
-  },
-  {
-    name: "Sweden",
-    location: [60.1282, 18.6435],
-    points: 61
-  }
-];
-
-
+const countries = data;
 // Loop through the cities array and create one marker for each city object
 countries.forEach(country => {
+    var location=[country.lat, country.long];
+        if(country.long == null || country.lat == null){
+            location=[25,-50]
+        }
     // Conditionals for countries points
     let color = "";
-    if (country.points > 200) {
-        color = "yellow";
+    if (country.gold > country.silver &&country.gold > country.bronze) {
+        color = "gold";
+        L.marker(location, {
+            icon: goldMedalIcon
+            
+           }).bindPopup("<h1>" + country.Name + "</h1> <hr> <br>Total events competed: "+country.count+"<h3>Medals:  <br>Gold: "+country.gold+"<br>Silver: "+country.silver+"<br>Bronze: "+country.bronze+"</h3>").addTo(myMap);
     }
-    else if (country.points > 100) {
-        color = "blue";
+    else if (country.silver > country.bronze) {
+        color = "silver";
+        L.marker(location, {
+            icon: silverMedalIcon
+            
+           }).bindPopup("<h1>" + country.Name + "</h1> <hr> <br>Total events competed: "+country.count+"<h3>Medals:  <br>Gold: "+country.gold+"<br>Silver: "+country.silver+"<br>Bronze: "+country.bronze+"</h3>").addTo(myMap);
     }
-    else if (country.points > 90) {
-        color = "green";
+    else if (country.bronze > 0) {
+        color = "bronze";
+        L.marker(location, {
+            icon:  BronzeMedalIcon
+            
+           }).bindPopup("<h1>" + country.Name + "</h1> <hr> <br>Total events competed: "+country.count+"<h3>Medals:  <br>Gold: "+country.gold+"<br>Silver: "+country.silver+"<br>Bronze: "+country.bronze+"</h3>").addTo(myMap);
     }
     else {
         color = "red";
+        L.circle(location, {
+            fillOpacity: 0.75,
+            color: "white",
+            fillColor: color,
+            // Adjust radius
+            radius: country.count * 1500
+            
+           }).bindPopup("<h1>" + country.Name + "</h1> <hr> <br>Total events competed: "+country.count+"<h3>Medals:  <br>Gold: "+country.gold+"<br>Silver: "+country.silver+"<br>Bronze: "+country.bronze+"</h3>").addTo(myMap);
     }
 
-    // Add circles to map
-    L.circle(country.location, {
-        fillOpacity: 0.75,
-        color: "white",
-        fillColor: color,
-        // Adjust radius
-        radius: country.points * 1500
-    }).bindPopup("<h1>" + country.name + "</h1> <hr> <h3>Points: " + country.points + "</h3>").addTo(myMap);
 })
