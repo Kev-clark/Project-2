@@ -1,4 +1,7 @@
 certifi==2018.4.16
+beautifulsoup4==4.6.0
+matplotlib==2.2.2
+requests==2.20.0
 click==6.7
 Flask==1.0.2
 Flask-SQLAlchemy==2.3.2
