@@ -81,6 +81,7 @@ const countryMarkers = countries.map(country => {
     else {
         color = "black";
         return L.circle(location, {
+            
             fillOpacity: 0.75,
             color: "white",
             fillColor: color,
@@ -91,8 +92,35 @@ const countryMarkers = countries.map(country => {
     }
 
 })
+var myMarkers={
+    "gold":[],
+    "silver":[],
+    "bronze":[],
+    "nonmedal":[]
+
+};
 console.log(countryMarkers);
-const cityLayer = L.layerGroup(countryMarkers);
+countryMarkers.forEach(marker=>{
+    if(marker.options.color==="white"){
+        myMarkers.nonmedal.push(marker)
+    }
+    else if (marker.options.icon.options.iconUrl==="https://github.com/Kev-clark/Project-2/blob/master/Images/Gold.png?raw=true"){
+        myMarkers.gold.push(marker)
+    }
+    else if (marker.options.icon.options.iconUrl==="https://github.com/Kev-clark/Project-2/blob/master/Images/Silver.png?raw=true"){
+        myMarkers.silver.push(marker)
+    }
+    else if (marker.options.icon.options.iconUrl==="https://github.com/Kev-clark/Project-2/blob/master/Images/Bronze.png?raw=true"){
+        myMarkers.bronze.push(marker)
+    }
+    
+})
+console.log(myMarkers);
+const GoldMedalLayer = L.layerGroup(myMarkers.gold);
+const SilverMedalLayer = L.layerGroup(myMarkers.silver);
+const BronzeMedalLayer = L.layerGroup(myMarkers.bronze);
+const Nonmedalwinner = L.layerGroup(myMarkers.nonmedal);
+
 const mainMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
 attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
 maxZoom: 18,
@@ -106,12 +134,16 @@ const baseMaps = {
 
 // Overlays that may be toggled on or off
 const overlayMaps = {
-    Medals: cityLayer
+    Gold : GoldMedalLayer, 
+    Silver: SilverMedalLayer, 
+    Bronze: BronzeMedalLayer,
+    No_medal: Nonmedalwinner
+
 };
 var myMap = L.map("map", {
     center: [0, 0],
     zoom: 3,
-    layers:[mainMap, cityLayer]
+    layers:[mainMap, GoldMedalLayer, SilverMedalLayer, BronzeMedalLayer, Nonmedalwinner]
 });
 
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
