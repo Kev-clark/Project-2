@@ -41,6 +41,11 @@ def index():
 def embed():
     return render_template("embed.html")
 
+
+@app.route("/analysis")
+def analysis():
+    return render_template("analysis.html")    
+
 @app.route("/games")
 def games():
     """Return a list of games."""
