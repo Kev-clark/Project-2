@@ -46,11 +46,19 @@ def games():
     """Return a list of games."""
 
     #Query for the games
+    
     results = db.session.query(Olympics.Games.distinct().label("Games"))
     games = [row.Games for row in results.all()]
+    returngames=[]
+    for x in games:
+        if x != None:
+            returngames.append(x)
+    returngames.sort(reverse = True)
+    
+            
 
     #Return a list of the column names (games names)
-    return jsonify(games)
+    return jsonify(returngames)
 
 @app.route("/medals/<games>")
 def medals(games):
