@@ -76,7 +76,7 @@ aside {
 article {
   grid-area: article;
   padding: 40px;
-  background: rgb(236, 122, 198);
+  background: rgb(122, 236, 221);
 }
 
 footer {
@@ -268,7 +268,7 @@ header {
   text-decoration: none;
   /* text-shadow: 0.5px 1px 1px rgb(15, 4, 165); */
   color: rgb(251, 250, 252);
-  background: rgb(248, 124, 192);
+  background: rgb(122, 236, 221);
   border-radius: 5px;
   padding: 0 5px;
   margin: 0 15px;
