@@ -16,7 +16,7 @@ function init() {
   
       // Use the first sample from the list to build the initial plots
       const firstSample = sampleNames[0];
-      console.log(firstSample);
+      
       getData(firstSample);
       
      
@@ -47,7 +47,7 @@ async function getData(sample){
 }
 
 function buildMap(countries){
-    console.log(countries)
+    
     // Create a map object
 // Loop through the cities array and create one marker for each city object
 const countryMarkers = countries.map(country => {
@@ -99,7 +99,7 @@ var myMarkers={
     "nonmedal":[]
 
 };
-console.log(countryMarkers);
+
 countryMarkers.forEach(marker=>{
     if(marker.options.color==="white"){
         myMarkers.nonmedal.push(marker)
@@ -115,7 +115,7 @@ countryMarkers.forEach(marker=>{
     }
     
 })
-console.log(myMarkers);
+
 const GoldMedalLayer = L.layerGroup(myMarkers.gold);
 const SilverMedalLayer = L.layerGroup(myMarkers.silver);
 const BronzeMedalLayer = L.layerGroup(myMarkers.bronze);
