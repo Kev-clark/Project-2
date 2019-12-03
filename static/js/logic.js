@@ -143,7 +143,7 @@ const overlayMaps = {
 var myMap = L.map("map", {
     center: [0, 0],
     zoom: 3,
-    layers:[mainMap, GoldMedalLayer, SilverMedalLayer, BronzeMedalLayer, Nonmedalwinner]
+    layers:[mainMap, GoldMedalLayer]
 });
 
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
