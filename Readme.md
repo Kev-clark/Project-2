@@ -6,9 +6,9 @@
 
 ## Project Description
 
-This project aims to created an app that can help us understand how have the Olympics Changed Over Time . The app presented different kind of presentations of data.
+This project aims to create an app that can helps us understand how have the Olympics Changed Over Time .
 
-Our app can be access at: https://poogoel-olympic-analysis.herokuapp.com/
+Our app can be access at: https://olympic-medalists.herokuapp.com/
 
 ## Data Source:
 https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results 
